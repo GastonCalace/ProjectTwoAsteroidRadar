@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.asteroids.observe(viewLifecycleOwner, Observer<List<ModelAsteroid>> { asteroids ->
             asteroids?.apply {
-                viewModelAdapter?.asteroids = asteroids
+                viewModelAdapter?.submitList(asteroids)
             }
         })
     }
@@ -33,6 +33,8 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+        viewModelAdapter = AsteroidRecyclerAdapter()
+
         binding.asteroidRecycler.adapter = viewModelAdapter
         setHasOptionsMenu(true)
 

@@ -11,8 +11,6 @@ import com.udacity.asteroidradar.domain.ModelAsteroid
 class AsteroidRecyclerAdapter :
         ListAdapter<ModelAsteroid, AsteroidRecyclerAdapter.AsteroidViewHolder>(AsteroidDiffCallBack) {
 
-    var asteroids: List<ModelAsteroid> = emptyList()
-
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
@@ -22,8 +20,6 @@ class AsteroidRecyclerAdapter :
                                     viewType: Int): AsteroidViewHolder {
         return  AsteroidViewHolder(ListViewItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
-
-    override fun getItemCount() = asteroids.size
 
 
     companion object AsteroidDiffCallBack : DiffUtil.ItemCallback<ModelAsteroid>() {
