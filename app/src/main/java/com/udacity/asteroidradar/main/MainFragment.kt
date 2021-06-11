@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.domain.ModelAsteroid
-import com.udacity.asteroidradar.repostery.AsteroidsRepository
 
 class MainFragment : Fragment() {
 

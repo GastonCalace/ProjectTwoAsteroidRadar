@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.main
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -34,9 +35,18 @@ class AsteroidRecyclerAdapter :
 
     class AsteroidViewHolder constructor(private var viewDataBinding: ListViewItemBinding):
             RecyclerView.ViewHolder(viewDataBinding.root) {
-        fun bind(asteroid: ModelAsteroid) {
-            viewDataBinding.asteroid = asteroid
-            viewDataBinding.executePendingBindings()
+        fun bind(modelAsteroid: ModelAsteroid) {
+            viewDataBinding.apply{
+                asteroid = modelAsteroid
+                if (modelAsteroid.isPotentiallyHazardous) {
+                    isPotentiallyHazardous.setTextColor(Color.RED)
+                    isPotentiallyHazardous.text = "Potentially hazardous"
+                } else {
+                    isPotentiallyHazardous.setTextColor(Color.WHITE)
+                    isPotentiallyHazardous.text = "Not hazardous"
+                }
+                executePendingBindings()
+            }
         }
     }
 

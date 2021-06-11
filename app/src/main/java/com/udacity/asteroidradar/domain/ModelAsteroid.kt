@@ -7,4 +7,5 @@ data class ModelAsteroid(val id: Long,
                          val estimatedDiameter: Double,
                          val relativeVelocity: Double,
                          val distanceFromEarth: Double,
-                         val isPotentiallyHazardous: Boolean)
+                         val isPotentiallyHazardous: Boolean) {
+}

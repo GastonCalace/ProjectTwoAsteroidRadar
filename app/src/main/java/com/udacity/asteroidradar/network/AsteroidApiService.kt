@@ -22,10 +22,13 @@ private val moshi = Moshi.Builder()
 interface AsteroidApiService {
     @GET("neo/rest/v1/feed")
     fun getNetworkAsteroids(
-        @Query ("START_DATE") start: String = "2015-09-07",
-        @Query ("END_DATE") end: String = "2015-09-08",
-        @Query ("API_KEY") key: String = "DEMO_KEY"
+        @Query ("API_KEY") key: String = KEY
     ): Deferred<String>
+
+    @GET("planetary/apod")
+    fun getPicture(
+        @Query("api_key") key: String = KEY
+    ): Deferred<PictureOfDay>
 }
 
 object AsteroidApi {
