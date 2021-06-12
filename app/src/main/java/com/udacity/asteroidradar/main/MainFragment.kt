@@ -5,9 +5,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.domain.ModelAsteroid
+import com.udacity.asteroidradar.domain.ModelPictureOfDay
+import com.udacity.asteroidradar.network.AsteroidApiService
 
 class MainFragment : Fragment() {
 
@@ -24,6 +27,7 @@ class MainFragment : Fragment() {
                 viewModelAdapter?.submitList(asteroids)
             }
         })
+        viewModel.picture
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +36,16 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
-        viewModelAdapter = AsteroidRecyclerAdapter()
+        viewModelAdapter = AsteroidRecyclerAdapter(AsteroidRecyclerAdapter.OnClickListener {
+            viewModel.displayAsteroidDetails(it)
+        })
+
+        viewModel.navigateToSelectedAsteroid.observe(viewLifecycleOwner, Observer {
+            if (null!= it) {
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.displayAsteroidDetailsComplete()
+            }
+        })
 
         binding.asteroidRecycler.adapter = viewModelAdapter
         setHasOptionsMenu(true)

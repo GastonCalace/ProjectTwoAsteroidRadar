@@ -1,5 +1,9 @@
 package com.udacity.asteroidradar.domain
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class ModelAsteroid(val id: Long,
                          val codename: String,
                          val closeApproachDate: String,
@@ -7,5 +11,4 @@ data class ModelAsteroid(val id: Long,
                          val estimatedDiameter: Double,
                          val relativeVelocity: Double,
                          val distanceFromEarth: Double,
-                         val isPotentiallyHazardous: Boolean) {
-}
+                         val isPotentiallyHazardous: Boolean) : Parcelable

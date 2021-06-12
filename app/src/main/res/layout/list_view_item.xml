@@ -11,35 +11,40 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/hazardouness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"/>
 
         <TextView
             android:id="@+id/asteroid_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:text="@{asteroid.codename}"
-            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/hazardouness"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/is_potentially_hazardous"
-            android:layout_width="match_parent"
+            android:id="@+id/asteroid_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text=""
-            android:textAlignment="viewStart"
+            android:text="@{asteroid.closeApproachDate}"
             android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/hazardouness"
             app:layout_constraintTop_toBottomOf="@+id/asteroid_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

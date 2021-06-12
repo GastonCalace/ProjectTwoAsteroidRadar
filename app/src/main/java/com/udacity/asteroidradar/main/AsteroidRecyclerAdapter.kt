@@ -6,15 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.ListViewItemBinding
 import com.udacity.asteroidradar.domain.ModelAsteroid
 
-class AsteroidRecyclerAdapter :
+class AsteroidRecyclerAdapter(private val onClickListener: OnClickListener) :
         ListAdapter<ModelAsteroid, AsteroidRecyclerAdapter.AsteroidViewHolder>(AsteroidDiffCallBack) {
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        val modelAsteroid = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(modelAsteroid)
+        }
+        holder.bind(modelAsteroid)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -38,16 +42,13 @@ class AsteroidRecyclerAdapter :
         fun bind(modelAsteroid: ModelAsteroid) {
             viewDataBinding.apply{
                 asteroid = modelAsteroid
-                if (modelAsteroid.isPotentiallyHazardous) {
-                    isPotentiallyHazardous.setTextColor(Color.RED)
-                    isPotentiallyHazardous.text = "Potentially hazardous"
-                } else {
-                    isPotentiallyHazardous.setTextColor(Color.WHITE)
-                    isPotentiallyHazardous.text = "Not hazardous"
-                }
                 executePendingBindings()
             }
         }
+    }
+
+    class OnClickListener(val clickListener: (modelAsteroid: ModelAsteroid) -> Unit) {
+        fun onClick(modelAsteroid:ModelAsteroid) = clickListener(modelAsteroid)
     }
 
 }
