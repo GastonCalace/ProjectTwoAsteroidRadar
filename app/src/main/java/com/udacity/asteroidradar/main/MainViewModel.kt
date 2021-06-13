@@ -5,13 +5,21 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.*
+import android.view.MenuItem
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.R
+
 import com.udacity.asteroidradar.database.getDatabaseAsteroids
 import com.udacity.asteroidradar.database.getDatabasePictures
 import com.udacity.asteroidradar.domain.ModelAsteroid
 import com.udacity.asteroidradar.repostery.AsteroidsRepository
 import com.udacity.asteroidradar.repostery.PictureOfDayRepository
 import kotlinx.coroutines.launch
+import java.util.*
+import java.util.Calendar.SUNDAY
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -45,6 +53,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun displayAsteroidDetailsComplete() {
         _navigateToSelectedAsteroid.value = null
+    }
+
+    fun updateFilter(item: MenuItem) {
+        viewModelScope.launch{
+            asteroids = when(item.itemId) {
+                R.id.show_all_menu -> asteroidsRepository.getAsteroidSelection()
+                R.id.show_today_menu -> asteroidsRepository.getAsteroidSelection(Calendar.DAY_OF_WEEK)
+                else -> asteroidsRepository.getAsteroidSelection(SUNDAY)
+            }
+        }
     }
 
     fun isNetworkAvailable(context: Context?): Boolean {
