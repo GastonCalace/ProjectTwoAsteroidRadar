@@ -9,11 +9,11 @@ interface AsteroidDao {
     @Query("SELECT * FROM DatabaseAsteroid ORDER BY closeApproachDate ASC")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 
-    @Query("SELECT * FROM DatabaseAsteroid WHERE closeApproachDate = :today ORDER BY closeApproachDate ASC LIMIT 1")
+    @Query("SELECT * FROM DatabaseAsteroid WHERE closeApproachDate = :today ORDER BY closeApproachDate ASC")
     fun getAsteroidsToday(today: String): LiveData<List<DatabaseAsteroid>>
 
-    @Query("SELECT * FROM DatabaseAsteroid ORDER BY closeApproachDate ASC")
-    fun getAsteroidsWeek(): LiveData<List<DatabaseAsteroid>>
+    @Query("SELECT * FROM DatabaseAsteroid WHERE closeApproachDate <= :endOfWeek ORDER BY closeApproachDate ASC")
+    fun getAsteroidsWeek(endOfWeek: String): LiveData<List<DatabaseAsteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroids: DatabaseAsteroid)

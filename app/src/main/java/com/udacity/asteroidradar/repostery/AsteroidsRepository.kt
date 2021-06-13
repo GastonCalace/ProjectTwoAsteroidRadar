@@ -15,13 +15,9 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Calendar.SUNDAY
+
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
-
-    val date = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            .format(Calendar.getInstance().time)
-
 
     var asteroids: LiveData<List<ModelAsteroid>> = Transformations.map(database.asteroidDao.getAsteroids()) {
         it.asDomainModel()
@@ -33,11 +29,11 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
                     it.asDomainModel()
                 }
             }
-            (Calendar.DAY_OF_WEEK) -> { Transformations.map(database.asteroidDao.getAsteroidsToday(date)) {
+            (Calendar.DAY_OF_WEEK) -> { Transformations.map(database.asteroidDao.getAsteroidsToday(getToday())) {
                     it.asDomainModel()
                 }
             }
-            else -> { Transformations.map(database.asteroidDao.getAsteroidsWeek()) {
+            else -> { Transformations.map(database.asteroidDao.getAsteroidsWeek(getSunday())) {
                     it.asDomainModel()
                 }
             }
@@ -51,7 +47,21 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             database.asteroidDao.insertAll(*parseAsteroidsJsonResult(
                     JSONObject(asteroidsList))
                     .asDatabaseModel())
-            database.asteroidDao.clear(date)
+            database.asteroidDao.clear(getToday())
         }
     }
+
+    fun getToday(): String {
+        return SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+                .format(Calendar.getInstance().time)
+    }
+
+    fun getSunday(): String {
+        var calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_WEEK, Calendar.DAY_OF_WEEK - Calendar.SUNDAY)
+        val currentTime = calendar.time
+        return SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+                .format(currentTime)
+    }
+
 }
