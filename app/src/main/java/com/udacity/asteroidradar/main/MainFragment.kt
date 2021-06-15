@@ -8,9 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.domain.ModelAsteroid
-import com.udacity.asteroidradar.domain.ModelPictureOfDay
-import com.udacity.asteroidradar.network.AsteroidApiService
 
 class MainFragment : Fragment() {
 
@@ -18,15 +15,8 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    private var viewModelAdapter: AsteroidRecyclerAdapter? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.asteroids.observe(viewLifecycleOwner, Observer<List<ModelAsteroid>> { asteroids ->
-            asteroids?.apply {
-                viewModelAdapter?.submitList(asteroids)
-            }
-        })
         viewModel.picture
     }
 
@@ -36,7 +26,8 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
-        viewModelAdapter = AsteroidRecyclerAdapter(AsteroidRecyclerAdapter.OnClickListener {
+
+        binding.asteroidRecycler.adapter  = AsteroidRecyclerAdapter(AsteroidRecyclerAdapter.OnClickListener {
             viewModel.displayAsteroidDetails(it)
         })
 
@@ -47,7 +38,6 @@ class MainFragment : Fragment() {
             }
         })
 
-        binding.asteroidRecycler.adapter = viewModelAdapter
         setHasOptionsMenu(true)
 
         return binding.root
@@ -59,7 +49,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            viewModel.updateFilter(item)
+        viewModel.updateFilter(item)
         return true
     }
 }

@@ -6,12 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.view.MenuItem
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.R
-
 import com.udacity.asteroidradar.database.getDatabaseAsteroids
 import com.udacity.asteroidradar.database.getDatabasePictures
 import com.udacity.asteroidradar.domain.ModelAsteroid
@@ -34,6 +30,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSelectedAsteroid : LiveData<ModelAsteroid>
         get() = _navigateToSelectedAsteroid
 
+    private val filter = MutableLiveData<String>("all")
+    val asteroids = Transformations.switchMap(filter) {
+        when(it) {
+            "all" -> asteroidsRepository.getAsteroidSelection()
+            "today" -> asteroidsRepository.getAsteroidSelection(Calendar.DAY_OF_WEEK)
+            else -> asteroidsRepository.getAsteroidSelection(SUNDAY)
+        }
+    }
+
+
     init {
         viewModelScope.launch {
             if(isNetworkAvailable(application)){
@@ -43,9 +49,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    var asteroids = asteroidsRepository.asteroids
-
     var picture = pictureOfDayRepository.picture
+
+    fun updateFilter(item: MenuItem) {
+        when (item.itemId) {
+            R.id.show_all_menu -> filter.value = "all"
+            R.id.show_today_menu -> filter.value = "today"
+            else -> filter.value = "else"
+        }
+    }
 
     fun displayAsteroidDetails(modelAsteroid: ModelAsteroid) {
         _navigateToSelectedAsteroid.value = modelAsteroid
@@ -53,16 +65,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun displayAsteroidDetailsComplete() {
         _navigateToSelectedAsteroid.value = null
-    }
-
-    fun updateFilter(item: MenuItem) {
-        viewModelScope.launch{
-            asteroids = when(item.itemId) {
-                R.id.show_all_menu -> asteroidsRepository.getAsteroidSelection()
-                R.id.show_today_menu -> asteroidsRepository.getAsteroidSelection(Calendar.DAY_OF_WEEK)
-                else -> asteroidsRepository.getAsteroidSelection(SUNDAY)
-            }
-        }
     }
 
     fun isNetworkAvailable(context: Context?): Boolean {
