@@ -19,13 +19,13 @@ import java.util.*
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
-    fun getAsteroidSelection(day: Int = 0): LiveData<List<ModelAsteroid>> {
-        return when (day) {
-            0 -> { Transformations.map(database.asteroidDao.getAsteroids()) {
+    fun getAsteroidSelection(show: String): LiveData<List<ModelAsteroid>> {
+        return when (show) {
+            "all" -> { Transformations.map(database.asteroidDao.getAsteroids()) {
                 it.asDomainModel()
             }
             }
-            (Calendar.DAY_OF_WEEK) -> { Transformations.map(database.asteroidDao.getAsteroidsToday(getToday())) {
+            "today" -> { Transformations.map(database.asteroidDao.getAsteroidsToday(getToday())) {
                 it.asDomainModel()
             }
             }

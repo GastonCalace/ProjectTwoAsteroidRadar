@@ -21,7 +21,7 @@ private val moshi = Moshi.Builder()
 interface AsteroidApiService {
     @GET("neo/rest/v1/feed")
     fun getNetworkAsteroids(
-        @Query ("API_KEY") key: String = "DEMO_KEY"
+        @Query ("API_KEY") key: String = KEY
     ): Deferred<String>
 
     @GET("planetary/apod")

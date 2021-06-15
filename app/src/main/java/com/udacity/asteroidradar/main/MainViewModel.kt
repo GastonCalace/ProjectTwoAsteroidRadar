@@ -32,13 +32,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val filter = MutableLiveData<String>("all")
     val asteroids = Transformations.switchMap(filter) {
-        when(it) {
-            "all" -> asteroidsRepository.getAsteroidSelection()
-            "today" -> asteroidsRepository.getAsteroidSelection(Calendar.DAY_OF_WEEK)
-            else -> asteroidsRepository.getAsteroidSelection(SUNDAY)
-        }
+        asteroidsRepository.getAsteroidSelection(it)
     }
-
 
     init {
         viewModelScope.launch {
