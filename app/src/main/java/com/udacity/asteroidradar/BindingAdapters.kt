@@ -2,6 +2,7 @@ package com.udacity.asteroidradar
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +14,10 @@ import com.udacity.asteroidradar.main.AsteroidRecyclerAdapter
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-        Picasso.with(imgView.context).
-        load(imgUri).
-        into(imgView);
+        Picasso.with(imgView.context)
+        .load(imgUri)
+        .placeholder(R.drawable.placeholder_picture_of_day)
+        .into(imgView)
     }
 }
 
@@ -40,6 +42,18 @@ fun bindAsteroidStatusDescription(imageView: ImageView, isHazardous: Boolean) {
         imageView.contentDescription = R.string.potentially_hazardous_asteroid_image.toString()
     } else {
         imageView.contentDescription = R.string.not_hazardous_asteroid_image.toString()
+    }
+}
+
+@BindingAdapter("selectedAsteroid")
+fun bindAsteroidRecyclerView(constraintLayout: ConstraintLayout, asteroid: ModelAsteroid){
+    val description = StringBuilder()
+    if (asteroid.isPotentiallyHazardous) {
+        description.append(R.string.view_asteroid).append(asteroid.codename).append(R.string.hazardous_asteroid)
+        constraintLayout.contentDescription = description
+    } else {
+        description.append(R.string.view_asteroid).append(asteroid.codename).append(R.string.not_hazardous_asteroid)
+        constraintLayout.contentDescription = description
     }
 }
 

@@ -24,17 +24,6 @@ class AsteroidRecyclerAdapter(private val onClickListener: OnClickListener) :
         return  AsteroidViewHolder(ListViewItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
-
-    companion object AsteroidDiffCallBack : DiffUtil.ItemCallback<ModelAsteroid>() {
-        override fun areItemsTheSame(oldItem: ModelAsteroid, newItem: ModelAsteroid): Boolean {
-            return oldItem === newItem
-        }
-
-        override fun areContentsTheSame(oldItem: ModelAsteroid, newItem: ModelAsteroid): Boolean {
-            return oldItem.id == newItem.id
-        }
-    }
-
     class AsteroidViewHolder constructor(private var viewDataBinding: ListViewItemBinding):
             RecyclerView.ViewHolder(viewDataBinding.root) {
         fun bind(modelAsteroid: ModelAsteroid) {
@@ -49,4 +38,13 @@ class AsteroidRecyclerAdapter(private val onClickListener: OnClickListener) :
         fun onClick(modelAsteroid:ModelAsteroid) = clickListener(modelAsteroid)
     }
 
+    companion object AsteroidDiffCallBack : DiffUtil.ItemCallback<ModelAsteroid>() {
+        override fun areItemsTheSame(oldItem: ModelAsteroid, newItem: ModelAsteroid): Boolean {
+            return oldItem === newItem
+        }
+
+        override fun areContentsTheSame(oldItem: ModelAsteroid, newItem: ModelAsteroid): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
 }

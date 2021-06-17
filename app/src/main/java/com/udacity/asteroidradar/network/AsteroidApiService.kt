@@ -3,8 +3,8 @@ package com.udacity.asteroidradar.network
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.Constants.BASE_URL
-import com.udacity.asteroidradar.Constants.KEY
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -21,12 +21,12 @@ private val moshi = Moshi.Builder()
 interface AsteroidApiService {
     @GET("neo/rest/v1/feed")
     fun getNetworkAsteroids(
-        @Query ("API_KEY") key: String = KEY
+        @Query ("API_KEY") key: String = BuildConfig.API_KEY
     ): Deferred<String>
 
     @GET("planetary/apod")
     fun getPicture(
-        @Query("api_key") key: String = KEY
+        @Query("api_key") key: String = BuildConfig.API_KEY
     ): Deferred<PictureOfDay>
 }
 

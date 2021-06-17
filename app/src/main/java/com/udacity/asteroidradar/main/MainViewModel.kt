@@ -18,6 +18,8 @@ import java.util.*
 import java.util.Calendar.SUNDAY
 
 
+enum class ApiStatus {LOADING, ERROR, DONE}
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseAsteroids = getDatabaseAsteroids(application)
@@ -29,6 +31,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToSelectedAsteroid = MutableLiveData<ModelAsteroid>()
     val navigateToSelectedAsteroid : LiveData<ModelAsteroid>
         get() = _navigateToSelectedAsteroid
+
+    private val _stastus = MutableLiveData<ApiStatus>()
+    val status: LiveData<ApiStatus>
+        get() = _stastus
 
     private val filter = MutableLiveData<String>("all")
     val asteroids = Transformations.switchMap(filter) {
