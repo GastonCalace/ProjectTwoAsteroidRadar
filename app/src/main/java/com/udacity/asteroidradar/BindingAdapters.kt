@@ -17,6 +17,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         Picasso.with(imgView.context)
         .load(imgUri)
         .placeholder(R.drawable.placeholder_picture_of_day)
+        .error(R.drawable.ic_broken_image)
         .into(imgView)
     }
 }
